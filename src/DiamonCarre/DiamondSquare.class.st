@@ -1,5 +1,5 @@
 Class {
-	#name : #PointCarre,
+	#name : #DiamondSquare,
 	#superclass : #Object,
 	#instVars : [
 		'map'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-PointCarre class >> newSize: anInteger rand: rand [
+DiamondSquare class >> newSize: anInteger rand: rand [
 	^ self new initialSize: anInteger rand: rand
 ]
 
 { #category : #'as yet unclassified' }
-PointCarre >> initialSize: anInteger rand: rand [
+DiamondSquare >> initialSize: anInteger rand: rand [
 	map := Dictionary new. 
 	1 to: anInteger do: [ :i | 1 to: anInteger do: [ :j | map at: (i@j) put: NewValueHolder new ] ].
 	self prepareDiamond: 1@1 to: anInteger@anInteger rand: rand.
@@ -25,7 +25,7 @@ PointCarre >> initialSize: anInteger rand: rand [
 ]
 
 { #category : #'as yet unclassified' }
-PointCarre >> prepareCarre: p1 to: p4 rand: rand [ 
+DiamondSquare >> prepareCarre: p1 to: p4 rand: rand [ 
 	| variation midPoint values coords |
 	variation := ((p4 - p1) / 2) x.
 	variation < 1
@@ -59,7 +59,7 @@ values
 ]
 
 { #category : #'as yet unclassified' }
-PointCarre >> prepareDiamond: p1 to: p4 rand: rand [
+DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 	| variation midPoint values coords |
 	variation := ((p4 - p1) / 2) x.
 	variation < 1
