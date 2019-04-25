@@ -25,40 +25,6 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 ]
 
 { #category : #'as yet unclassified' }
-DiamondSquare >> prepareCarre: p1 to: p4 rand: rand [ 
-	| variation midPoint values coords |
-	variation := ((p4 - p1) / 2) x.
-	variation < 1
-		ifTrue: [ ^ self ].
-	midPoint := ((p4 - p1) / 2 + p1) asIntegerPoint.
-	map at: midPoint ifAbsent: [ ^ self ].
-	midPoint = p1
-		ifTrue: [ ^ self ].
-	values := OrderedCollection new.
-	coords := OrderedCollection new.
-	{(midPoint x @ p1 y).
-	(p1 x @ midPoint y).
-	(p4 x @ midPoint y).
-	(midPoint x @ p4 y)}
-		do: [ :coord | 
-			map
-				at: coord asIntegerPoint
-				ifPresent: [ :el | values add: el. coords add: coord ] ].
-values
-		do: [ :el | 
-			el
-				whenChangedDo:
-				 [ :ev | 
-					(map at: midPoint) contents
-						ifNil: [ (values allSatisfy: [ :el2 | el2 contents isNotNil ])
-								ifTrue: [ (map at: midPoint)
-										contents: (values collect: #contents) average + (rand nextInt: variation) ] ] ] ].
-	Transcript
-		show: 'populatedCarreon: ' , midPoint asString,  'with:' , coords asString ;
-		cr
-]
-
-{ #category : #'as yet unclassified' }
 DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 	| variation midPoint values coords |
 	variation := ((p4 - p1) / 2) x.
@@ -89,19 +55,19 @@ DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 		show: 'populatedDiamondon: ' , midPoint asString, 'with:' , coords asString ;
 		cr.
 	self
-		prepareCarre: p1 - (variation @ 0)
+		prepareSquare: p1 - (variation @ 0)
 		to: p4 - (variation @ 0)
 		rand: rand.
 	self
-		prepareCarre: p1 + (variation @ 0)
+		prepareSquare: p1 + (variation @ 0)
 		to: p4 + (variation @ 0)
 		rand: rand.
 	self
-		prepareCarre: p1 - (0 @ variation)
+		prepareSquare: p1 - (0 @ variation)
 		to: p4 - (0 @ variation)
 		rand: rand.
 	self
-		prepareCarre: p1 + (0 @ variation)
+		prepareSquare: p1 + (0 @ variation)
 		to: p4 + (0 @ variation)
 		rand: rand.
 	self prepareDiamond: p1 to: p4 - (variation @ variation) rand: rand.
@@ -114,4 +80,38 @@ DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 		to: p4 - (variation @ 0)
 		rand: rand.
 	self prepareDiamond: p1 + (variation @ variation) to: p4 rand: rand
+]
+
+{ #category : #'as yet unclassified' }
+DiamondSquare >> prepareSquare: p1 to: p4 rand: rand [ 
+	| variation midPoint values coords |
+	variation := ((p4 - p1) / 2) x.
+	variation < 1
+		ifTrue: [ ^ self ].
+	midPoint := ((p4 - p1) / 2 + p1) asIntegerPoint.
+	map at: midPoint ifAbsent: [ ^ self ].
+	midPoint = p1
+		ifTrue: [ ^ self ].
+	values := OrderedCollection new.
+	coords := OrderedCollection new.
+	{(midPoint x @ p1 y).
+	(p1 x @ midPoint y).
+	(p4 x @ midPoint y).
+	(midPoint x @ p4 y)}
+		do: [ :coord | 
+			map
+				at: coord asIntegerPoint
+				ifPresent: [ :el | values add: el. coords add: coord ] ].
+values
+		do: [ :el | 
+			el
+				whenChangedDo:
+				 [ :ev | 
+					(map at: midPoint) contents
+						ifNil: [ (values allSatisfy: [ :el2 | el2 contents isNotNil ])
+								ifTrue: [ (map at: midPoint)
+										contents: (values collect: #contents) average + (rand nextInt: variation) ] ] ] ].
+	Transcript
+		show: 'populatedCarreon: ' , midPoint asString,  'with:' , coords asString ;
+		cr
 ]
