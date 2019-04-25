@@ -163,7 +163,8 @@ PointCarre >> initialSize: anInteger rand: rand [
 	(map at: 1@1) contents: (rand nextInt:anInteger).
 	(map at: 1@anInteger) contents: (rand nextInt:anInteger).	
 	(map at: anInteger@1) contents: (rand nextInt:anInteger).	
-	(map at: anInteger@anInteger) contents: (rand nextInt:anInteger).	
+	(map at: anInteger@anInteger) contents: (rand nextInt:anInteger).
+	map := map collect: #contents
 ]
 
 { #category : #'as yet unclassified' }
