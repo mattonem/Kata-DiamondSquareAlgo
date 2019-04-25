@@ -33,7 +33,7 @@ DiamondSquare >> blCell: aValue [
 	<gtExample>
 	
 	^ BlElement new
-		size: 5@5;
+		size: 1@1;
 		background: (Color gray: aValue) .
 ]
 
@@ -47,7 +47,7 @@ DiamondSquare >> grid [
 			c horizontal fitContent.
 			c vertical matchParent ];
 		layout: BlGridLayout vertical;
-		layoutDo: [ :l | l cellSpacing: 1; rowCount: map size sqrt ]
+		layoutDo: [ :l | l cellSpacing: 0; rowCount: map size sqrt ]
 ]
 
 { #category : #'as yet unclassified' }
