@@ -63,6 +63,24 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 ]
 
 { #category : #'as yet unclassified' }
+DiamondSquare >> morph [
+	| size morph minVal maxVal |
+	size := map size sqrt.
+	morph := Morph new bounds: (1 @ 1 corner: size @ size).
+		minVal := map min.
+	maxVal := map max - minVal.
+	map
+		keysAndValuesDo: [ :coord :value | 
+			morph
+				addMorph:
+					(Morph new
+						bounds: (1 @ 1 corner: 2 @ 2);
+						position: coord;
+						color: (Color gray:(value - minVal) / maxVal)) ].
+	^ morph
+]
+
+{ #category : #'as yet unclassified' }
 DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 	| variation midPoint values coords |
 	variation := ((p4 - p1) / 2) x.
