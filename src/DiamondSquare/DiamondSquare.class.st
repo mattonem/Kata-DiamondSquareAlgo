@@ -59,16 +59,15 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 	(map at: 1@anInteger) contents: (rand nextInt:anInteger).	
 	(map at: anInteger@1) contents: (rand nextInt:anInteger).	
 	(map at: anInteger@anInteger) contents: (rand nextInt:anInteger).
-	map := map collect: #contents
+	map := map collect: #contents.
+	self normalize
 ]
 
 { #category : #'as yet unclassified' }
 DiamondSquare >> morph [
-	| size morph minVal maxVal |
+	| size morph |
 	size := map size sqrt.
 	morph := Morph new bounds: (1 @ 1 corner: size @ size).
-		minVal := map min.
-	maxVal := map max - minVal.
 	map
 		keysAndValuesDo: [ :coord :value | 
 			morph
@@ -76,8 +75,17 @@ DiamondSquare >> morph [
 					(Morph new
 						bounds: (1 @ 1 corner: 2 @ 2);
 						position: coord;
-						color: (Color gray:(value - minVal) / maxVal)) ].
+						color: (Color gray: value)) ].
 	^ morph
+]
+
+{ #category : #'as yet unclassified' }
+DiamondSquare >> normalize [
+	| minVal maxVal |
+	minVal := map min.
+	maxVal := map max - minVal.
+	map
+		keysAndValuesDo: [ :coord :value | map at: coord put: (value - minVal) / maxVal ]
 ]
 
 { #category : #'as yet unclassified' }
