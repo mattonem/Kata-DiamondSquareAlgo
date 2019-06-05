@@ -64,6 +64,11 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 ]
 
 { #category : #'as yet unclassified' }
+DiamondSquare >> map [
+	^ map
+]
+
+{ #category : #'as yet unclassified' }
 DiamondSquare >> morph [
 	| size morph |
 	size := map size sqrt.
@@ -120,9 +125,6 @@ DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 										contents:
 											(values collect: #contents) average
 												+ ((rand nextInt: variation) - (variation / 2)) ] ] ] ].
-	Transcript
-		show: 'populatedDiamondon: ' , midPoint asString , 'with:' , coords asString;
-		cr.
 	self
 		prepareSquare: p1 - (variation @ 0)
 		to: p4 - (variation @ 0)
@@ -183,7 +185,4 @@ DiamondSquare >> prepareSquare: p1 to: p4 rand: rand [
 										contents:
 											(values collect: #contents) average
 												+ ((rand nextInt: variation) - (variation / 2)) ] ] ] ].
-	Transcript
-		show: 'populatedCarreon: ' , midPoint asString , 'with:' , coords asString;
-		cr
 ]
