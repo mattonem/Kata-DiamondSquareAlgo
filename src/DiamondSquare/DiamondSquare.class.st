@@ -72,15 +72,15 @@ DiamondSquare >> map [
 DiamondSquare >> morph [
 	| size morph |
 	size := map size sqrt.
-	morph := Morph new bounds: (1 @ 1 corner: size @ size).
+	morph := ColorForm extent: size @ size depth: 16.
 	map
 		keysAndValuesDo: [ :coord :value | 
 			morph
-				addMorph:
-					(Morph new
-						bounds: (1 @ 1 corner: 2 @ 2);
-						position: coord;
-						color: (Color gray: value)) ].
+				colorAt: coord - (1 @ 1)
+				put:
+					(Color
+						colorFromPixelValue: ((Color gray: value) basicPixelValueForDepth: 8)
+						depth: 8) ].
 	^ morph
 ]
 
