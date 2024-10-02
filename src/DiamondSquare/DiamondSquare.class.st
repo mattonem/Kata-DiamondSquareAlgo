@@ -24,6 +24,12 @@ DiamondSquare class >> newSize: anInteger rand: rand [
 ]
 
 { #category : 'as yet unclassified' }
+DiamondSquare >> averageOf: aCollection [
+
+	^ (self sumOf: aCollection) / aCollection size
+]
+
+{ #category : 'as yet unclassified' }
 DiamondSquare >> initialSize: anInteger rand: rand [
 
 	map := Dictionary new.
@@ -42,6 +48,18 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 { #category : 'as yet unclassified' }
 DiamondSquare >> map [
 	^ map
+]
+
+{ #category : 'as yet unclassified' }
+DiamondSquare >> mapMax [
+
+	^ map inject: map anyOne into: [ :min :each | min max: each ]
+]
+
+{ #category : 'as yet unclassified' }
+DiamondSquare >> mapMin [
+
+	^ map inject: map anyOne into: [ :min :each | min min: each ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -69,8 +87,8 @@ DiamondSquare >> newValueHolder [
 { #category : 'as yet unclassified' }
 DiamondSquare >> normalize [
 	| minVal maxVal |
-	minVal := map min.
-	maxVal := map max - minVal.
+	minVal := self mapMin.
+	maxVal := self mapMax - minVal.
 	map
 		keysAndValuesDo: [ :coord :value | map at: coord put: (value - minVal) / maxVal ]
 ]
@@ -98,7 +116,7 @@ DiamondSquare >> prepareDiamond: p1 to: p4 rand: rand [
 		el whenChangedDo: [ :ev |
 			(map at: midPoint) contents ifNil: [
 				(values allSatisfy: [ :el2 | el2 contents isNotNil ]) ifTrue: [
-					(map at: midPoint) contents: (values collect: #contents) average
+					(map at: midPoint) contents: (self averageOf: (values collect: #contents))
 						+ ((rand nextInteger: variation) - (variation / 2)) ] ] ] ].
 	self
 		prepareSquare: p1 - (variation @ 0)
@@ -160,4 +178,12 @@ DiamondSquare >> prepareSquare: p1 to: p4 rand: rand [
 										contents:
 											(values collect: #contents) average
 												+ ((rand nextInteger: variation) - (variation / 2)) ] ] ] ].
+]
+
+{ #category : 'as yet unclassified' }
+DiamondSquare >> sumOf: aCollection [ 
+	| sample sum |
+	sample := aCollection anyOne.
+	sum := aCollection inject: sample into: [ :accum :each | accum + each ].
+	^ sum - sample
 ]
