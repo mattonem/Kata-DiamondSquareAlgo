@@ -53,13 +53,13 @@ DiamondSquare >> map [
 { #category : 'as yet unclassified' }
 DiamondSquare >> mapMax [
 
-	^ map inject: map anyOne into: [ :min :each | min max: each ]
+	^ map inject: map values atRandom into: [ :min :each | min max: each ]
 ]
 
 { #category : 'as yet unclassified' }
 DiamondSquare >> mapMin [
 
-	^ map inject: map anyOne into: [ :min :each | min min: each ]
+	^ map inject: map values atRandom into: [ :min :each | min min: each ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -176,14 +176,17 @@ DiamondSquare >> prepareSquare: p1 to: p4 rand: rand [
 						ifNil: [ (values allSatisfy: [ :el2 | el2 contents isNotNil ])
 								ifTrue: [ (map at: midPoint)
 										contents:
-											(values collect: #contents) average
+											(self averageOf: (values collect: #contents))
 												+ ((rand nextInteger: variation) - (variation / 2)) ] ] ] ].
 ]
 
 { #category : 'as yet unclassified' }
-DiamondSquare >> sumOf: aCollection [ 
+DiamondSquare >> sumOf: aCollection [
+
 	| sample sum |
-	sample := aCollection anyOne.
-	sum := aCollection inject: sample into: [ :accum :each | accum + each ].
-	^ sum - sample
+	sample := 0.
+	sum := aCollection
+		       inject: sample
+		       into: [ :accum :each | accum + each ].
+	^ sum
 ]
