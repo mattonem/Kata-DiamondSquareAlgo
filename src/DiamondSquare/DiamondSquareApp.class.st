@@ -102,12 +102,9 @@ DiamondSquareApp >> generate [
 	size isNaN ifTrue: [
 		(document getElementById: #size) classList add: 'is-invalid'.
 		^ self ].
-	console log: size > 2.
 	size <= 2 ifTrue: [
-		console log: 'ytolo'.
 		(document getElementById: #size) classList add: 'is-invalid'.
 		^ self ].
-	console log: size > 2.
 	(size - 1 ~= 0 and: [ (size - 1 bitAnd: size - 2) = 0 ])
 		ifFalse: [
 			(document getElementById: #size) classList add: 'is-invalid'.
