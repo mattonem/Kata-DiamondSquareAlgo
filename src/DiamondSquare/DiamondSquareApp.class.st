@@ -55,22 +55,34 @@ DiamondSquareApp class >> generateHtmlUsing: html [
 								named: #plotter.
 
 							html div
-								class: 'row g-2';
+								class: 'row g-10';
 								with: [
 									html div
 										class: 'col-auto';
 										with: [
-											html textInput
-												class: 'form-control';
-												id: #size;
-												value: 9 ].
+											html div
+												class: 'form-floating';
+												with: [
+													html textInput
+														class: 'form-control';
+														id: #size;
+														value: 33.
+
+													html label
+														for: #size;
+														class: 'floatingInput';
+														with: 'Resolution'.
+													html div
+														class: 'invalid-feedback';
+														with:
+															'Resolution must be 2**n + 1. (eg. 9, 17, 33, ...)' ] ].
 									html div
 										class: 'col-auto';
 										with: [
 											html button
 												class: 'btn btn-primary';
 												id: #generate;
-												with: 'generate' ] ] ] ] ]
+												with: 'Generate' ] ] ] ] ]
 ]
 
 { #category : 'description' }
@@ -91,6 +103,7 @@ DiamondSquareApp >> generateForSize: size [
 	plotter width: size.
 	plotter height: size.
 	plotter clear.
+	console log: diamond map size.
 	^ 1 to: size do: [ :x |
 		  1 to: size do: [ :y |
 			  | value color |
@@ -112,6 +125,11 @@ DiamondSquareApp >> start [
 		addEventListener: #click
 		block: [
 			| size |
-			size := (document getElementById: #size )value asInteger.
-			self generateForSize: size ]
+			size := (document getElementById: #size) value asInteger.
+			(size - 1 ~= 0 and: [ (size - 1 bitAnd: size - 2) = 0 ])
+				ifFalse: [
+				(document getElementById: #size) classList add: 'is-invalid' ]
+				ifTrue: [
+					(document getElementById: #size) classList remove: 'is-invalid'.
+					self generateForSize: size ] ]
 ]

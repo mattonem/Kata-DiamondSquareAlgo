@@ -42,7 +42,8 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 	(map at: anInteger @ anInteger) contents:
 		(rand nextInteger: anInteger).
 	map := map collect: #contents.
-	self normalize
+	self normalize.
+	console log: map.
 ]
 
 { #category : 'as yet unclassified' }
@@ -86,11 +87,16 @@ DiamondSquare >> newValueHolder [
 
 { #category : 'as yet unclassified' }
 DiamondSquare >> normalize [
+
 	| minVal maxVal |
 	minVal := self mapMin.
 	maxVal := self mapMax - minVal.
-	map
-		keysAndValuesDo: [ :coord :value | map at: coord put: (value - minVal) / maxVal ]
+	map keysAndValuesDo: [ :coord :value |
+		| normalized |
+		normalized := value - minVal / maxVal.
+		normalized := normalized max: 0.
+		normalized := normalized min: 1.
+		map at: coord put: normalized ]
 ]
 
 { #category : 'as yet unclassified' }
