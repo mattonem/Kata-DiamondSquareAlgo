@@ -39,8 +39,11 @@ DiamondSquareApp class >> generateHtmlUsing: html [
 				class: 'card col-10 mx-auto text-center';
 				with: [
 					html div
-						class: 'card-body';
-						with: 'Diamond Square Generator'.
+						class: 'card-header';
+						with: [
+							html heading
+								level: 1;
+								with: 'Diamond Square Generator' ].
 					html div
 						class: 'card-body';
 						with: [
@@ -87,6 +90,7 @@ DiamondSquareApp >> generateForSize: size [
 	plotter := self componentNamed: 'plotter'.
 	plotter width: size.
 	plotter height: size.
+	plotter clear.
 	^ 1 to: size do: [ :x |
 		  1 to: size do: [ :y |
 			  | value color |
