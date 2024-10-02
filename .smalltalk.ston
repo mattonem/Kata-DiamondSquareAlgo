@@ -1,0 +1,19 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'DiamondSquare',
+      #directory : 'src',  
+      #platforms : [ #pharo ]
+    }
+  ],
+  #postLoading : [
+    'scripts/exportApp.st'
+  ],
+  #testing : { 
+    #failOnZeroTests : false,
+    #categories : [ 'DiamondSquare-Tests' ],
+    #coverage : {
+      #packages : [ 'DiamondSquare' ]
+    }
+  }
+}
