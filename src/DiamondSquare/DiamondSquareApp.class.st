@@ -95,6 +95,29 @@ DiamondSquareApp class >> updateHtmlRoot: root [
 ]
 
 { #category : 'initialize-release' }
+DiamondSquareApp >> generate [
+
+	| size |
+	size := (document getElementById: #size) value asInteger.
+	size isNaN ifTrue: [
+		(document getElementById: #size) classList add: 'is-invalid'.
+		^ self ].
+	console log: size > 2.
+	size <= 2 ifTrue: [
+		console log: 'ytolo'.
+		(document getElementById: #size) classList add: 'is-invalid'.
+		^ self ].
+	console log: size > 2.
+	(size - 1 ~= 0 and: [ (size - 1 bitAnd: size - 2) = 0 ])
+		ifFalse: [
+			(document getElementById: #size) classList add: 'is-invalid'.
+			^ self ]
+		ifTrue: [
+		(document getElementById: #size) classList remove: 'is-invalid' ].
+	self generateForSize: size
+]
+
+{ #category : 'initialize-release' }
 DiamondSquareApp >> generateForSize: size [
 
 	| plotter diamond |
@@ -123,13 +146,5 @@ DiamondSquareApp >> start [
 	document getElementById: #size.
 	(document getElementById: #generate)
 		addEventListener: #click
-		block: [
-			| size |
-			size := (document getElementById: #size) value asInteger.
-			(size - 1 ~= 0 and: [ (size - 1 bitAnd: size - 2) = 0 ])
-				ifFalse: [
-				(document getElementById: #size) classList add: 'is-invalid' ]
-				ifTrue: [
-					(document getElementById: #size) classList remove: 'is-invalid'.
-					self generateForSize: size ] ]
+		block: [ self generate ]
 ]
