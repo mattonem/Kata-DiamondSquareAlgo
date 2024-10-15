@@ -53,6 +53,11 @@ WCPixelPlotter >> context [
 ]
 
 { #category : 'rendering' }
+WCPixelPlotter >> getBoundingClientRect [
+	^ (self getElementById: #plot) getBoundingClientRect
+]
+
+{ #category : 'rendering' }
 WCPixelPlotter >> height [
 
 	^ height
@@ -62,6 +67,21 @@ WCPixelPlotter >> height [
 WCPixelPlotter >> height: anObject [
 
 	height := anObject
+]
+
+{ #category : 'rendering' }
+WCPixelPlotter >> onMouseMoveDo: aBlock [
+
+	(self getElementById: #plot)
+		addEventListener: #mousemove
+		block: [ :e |
+			| rect pos |
+			rect := self getBoundingClientRect.
+			pos := e clientX - rect left @ (e clientY - rect top).
+			pos := (pos x * self width / rect width)  
+			       @ (pos y * self height / rect height).
+			pos := pos asIntegerPoint + (1 @ 1).
+			aBlock cull: pos ]
 ]
 
 { #category : 'rendering' }
@@ -77,8 +97,8 @@ WCPixelPlotter >> renderHtmlOn: html [
 
 { #category : 'rendering' }
 WCPixelPlotter >> start [
+
 	super start.
-	
 ]
 
 { #category : 'rendering' }

@@ -3,6 +3,9 @@ Class {
 	#superclass : 'PjFileBasedWebApp',
 	#traits : 'StaticComponentHolder',
 	#classTraits : 'StaticComponentHolder classTrait',
+	#instVars : [
+		'diamond'
+	],
 	#category : 'DiamondSquare',
 	#package : 'DiamondSquare'
 }
@@ -82,7 +85,10 @@ DiamondSquareApp class >> generateHtmlUsing: html [
 											html button
 												class: 'btn btn-primary';
 												id: #generate;
-												with: 'Generate' ] ] ] ] ]
+												with: 'Generate' ] ].
+							html preformatted
+								id: 'logs';
+								with: '' ] ] ]
 ]
 
 { #category : 'description' }
@@ -92,6 +98,14 @@ DiamondSquareApp class >> updateHtmlRoot: root [
 	root language: 'en'.
 	root stylesheet url:
 		'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'
+]
+
+{ #category : 'initialize-release' }
+DiamondSquareApp >> debug: something [
+
+	diamond ifNotNil: [
+		(document getElementById: #logs)
+			innerHTML: (diamond map at: something) asString , ' ' , (self valueToColor: (diamond map at: something)) ]
 ]
 
 { #category : 'initialize-release' }
@@ -117,19 +131,17 @@ DiamondSquareApp >> generate [
 { #category : 'initialize-release' }
 DiamondSquareApp >> generateForSize: size [
 
-	| plotter diamond |
+	| plotter |
 	diamond := DiamondSquare newSize: size rand: PjCustomRandom new.
 	plotter := self componentNamed: 'plotter'.
 	plotter width: size.
 	plotter height: size.
 	plotter clear.
-	console log: diamond map size.
 	^ 1 to: size do: [ :x |
 		  1 to: size do: [ :y |
 			  | value color |
 			  value := diamond map at: x @ y.
-			  value := (value * 255) asInteger toString: 16.
-			  color := '#' , value , value , value.
+			  color := self valueToColor: value.
 			  plotter at: x @ y color: color ] ]
 ]
 
@@ -143,5 +155,16 @@ DiamondSquareApp >> start [
 	document getElementById: #size.
 	(document getElementById: #generate)
 		addEventListener: #click
-		block: [ self generate ]
+		block: [ self generate ].
+	(self componentNamed: #plotter) onMouseMoveDo: [ :e | self debug: e ]
+]
+
+{ #category : 'initialize-release' }
+DiamondSquareApp >> valueToColor: value [
+
+	| tempvalue |
+	tempvalue := ((value * 255) asInteger toString: 16)
+		             padStart: 2
+		             with: '0'.
+	^ '#' , tempvalue , tempvalue , tempvalue
 ]

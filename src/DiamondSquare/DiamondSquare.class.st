@@ -4,9 +4,6 @@ Class {
 	#instVars : [
 		'map'
 	],
-	#pools : [
-		'PjBrowserGlobals'
-	],
 	#category : 'DiamondSquare',
 	#package : 'DiamondSquare'
 }
@@ -43,7 +40,6 @@ DiamondSquare >> initialSize: anInteger rand: rand [
 		(rand nextInteger: anInteger).
 	map := map collect: #contents.
 	self normalize.
-	console log: map.
 ]
 
 { #category : 'as yet unclassified' }
